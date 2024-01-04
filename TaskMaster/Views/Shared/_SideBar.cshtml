@@ -1,0 +1,78 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TaskMaster.Areas.Identity.Data;
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <!-- Sidebar -->
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar bg-light vh-100">
+        <div class="position-sticky">
+            <div class="list-group list-group-flush">
+                <!-- Sidebar items -->
+                <a href="/dashboard" class="list-group-item list-group-item-action bg-light py-3">
+                    <i class="fas fa-tachometer-alt fa-fw me-2"></i><span>Dashboard</span>
+                </a>
+
+
+
+                <a href="#projectsSubmenu" class="list-group-item list-group-item-action bg-light py-3" data-bs-toggle="collapse">
+                    <i class="fas fa-chart-area fa-fw me-2"></i><span>Projects</span>
+                </a>
+
+                <div class="collapse" id="projectsSubmenu">
+                   <ul class="list-unstyled bg-light py-2">
+                        <li
+                            ><a class="list-group-item list-group-item-action bg-light py-3" href="/Projects/Index">All</a>
+                        </li>
+                 
+                        @if (ViewData["Projects"] is Dictionary<int, string> projectDictionary && projectDictionary != null)
+                        {
+                            foreach (var project in projectDictionary)
+                            {
+                                <li>
+                                    <a class="list-group-item list-group-item-action bg-light py-3" href="/Projects/Details/@project.Key">@project.Value</a>
+                                </li>
+                            }
+                        }
+
+
+                        </ul>
+
+                 
+                </div>
+
+
+
+
+                <a href="#teamsSubmenu" class="list-group-item list-group-item-action bg-light py-3" data-bs-toggle="collapse">
+                    <i class="fas fa-lock fa-fw me-2"></i><span>Teams</span>
+                </a>
+
+              <div class="collapse" id="teamsSubmenu">
+                <ul class="list-unstyled bg-light py-2">
+
+                        @if (ViewData["Teams"] is Dictionary<int, string> teamsDictionary && teamsDictionary != null)
+                        {
+                            <li>
+                                <a class="list-group-item list-group-item-action bg-light py-3" href="/Teams/Index">All</a>
+                            </li>
+                            foreach (var team in teamsDictionary)
+                            {
+                                <li>
+                                    <a class="list-group-item list-group-item-action bg-light py-3" href="/Teams/Details/@team.Key">@team.Value</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+
+
+                <a href="/Notes" class="list-group-item list-group-item-action bg-light py-3">
+                    <i class="fas fa-chart-line fa-fw me-2"></i><span>Notes</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+}
